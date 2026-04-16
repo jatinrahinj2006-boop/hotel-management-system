@@ -30,6 +30,15 @@ A comprehensive hotel management application with separate admin and customer in
 - **Rate Limiting** — API request throttling to prevent abuse
 - **Input Validation** — Comprehensive data validation on all inputs
 
+## Screenshots
+
+### Customer Portal
+![AURUM](assets/screenshot-hero.png)
+
+### Admin Dashboard  
+![Admin Overview](assets/screenshot-admin_login.png)
+![Room Management](assets/screenshot-admin.png)
+
 ## Tech Stack
 
 **Backend:**
