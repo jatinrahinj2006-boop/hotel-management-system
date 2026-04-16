@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aurum Hotels — Admin (Rooms)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    :root {
+      --admin-bg: #0a0a0a;
+      --admin-card: #161616;
+      --admin-border: rgba(255, 255, 255, 0.08);
+      --admin-text: #ffffff;
+      --admin-muted: rgba(255, 255, 255, 0.5);
+      --admin-gold: #c9a94e;
+      --admin-gold-glow: rgba(201, 169, 78, 0.3);
+      --admin-success: #2ecc71;
+      --admin-error: #e74c3c;
+      --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--admin-bg);
+      color: var(--admin-text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -1000px 0;
+      }
+      100% {
+        background-position: 1000px 0;
+      }
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* Ensure select dropdown options are readable in dark mode */
+    select {
+      color-scheme: dark;
+      color: var(--admin-text);
+    }
+
+    select option {
+      background: #0b0f17; /* match admin background */
+      color: rgba(255, 255, 255, 0.92);
+    }
+
+    .admin-wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 40px;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--admin-border);
+    }
+
+    .admin-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      margin: 0;
+      letter-spacing: 0.2px;
+      background: linear-gradient(135deg, #ffffff 0%, #c9a94e 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .admin-subtitle {
+      margin: 8px 0 0 0;
+      color: var(--admin-muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 400;
+    }
+
+    .admin-card {
+      background: var(--admin-card);
+      border: 1px solid var(--admin-border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+      backdrop-filter: blur(10px);
+      transition: var(--transition-smooth);
+      animation: slideUp 0.6s ease-out;
+      animation-fill-mode: both;
+    }
+
+    .admin-card:nth-child(1) { animation-delay: 0.1s; }
+    .admin-card:nth-child(2) { animation-delay: 0.2s; }
+    .admin-card:nth-child(3) { animation-delay: 0.3s; }
+    .admin-card:nth-child(4) { animation-delay: 0.4s; }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .admin-card:hover {
+      border-color: rgba(201, 169, 78, 0.2);
+      box-shadow: 0 8px 32px rgba(201, 169, 78, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .admin-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      position: relative;
+    }
+
+    .admin-btn {
+      cursor: pointer;
+      border: 1px solid var(--admin-border);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+      color: var(--admin-text);
+      border-radius: 12px;
+      padding: 12px 20px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      transition: var(--transition-smooth);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .admin-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(201, 169, 78, 0.2), transparent);
+      transition: var(--transition-smooth);
+    }
+
+    .admin-btn:hover {
+      border-color: var(--admin-gold);
+      background: linear-gradient(135deg, rgba(201, 169, 78, 0.1) 0%, rgba(201, 169, 78, 0.05) 100%);
+      color: var(--admin-gold);
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 24px var(--admin-gold-glow);
+    }
+
+    .admin-btn:hover::before {
+      left: 100%;
+    }
+
+    .admin-btn:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .admin-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .admin-btn:disabled:hover {
+      border-color: var(--admin-border);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+      color: var(--admin-text);
+      box-shadow: none;
+      transform: none;
+    }
+
+    .admin-status {
+      color: var(--admin-muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      margin-top: 10px;
+      min-height: 18px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    th,
+    td {
+      text-align: left;
+      padding: 12px 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      vertical-align: middle;
+    }
+
+    th {
+      font-size: 12px;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      color: var(--admin-muted);
+      font-weight: 600;
+    }
+
+    td {
+      font-size: 14px;
+      color: var(--admin-text);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.06);
+      font-size: 13px;
+      color: var(--admin-text);
+    }
+
+    .pill--gold {
+      border-color: rgba(201, 169, 78, 0.35);
+      background: rgba(201, 169, 78, 0.12);
+    }
+
+    /* Notification System */
+    .notification-bell {
+      position: relative;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      color: var(--admin-text);
+    }
+
+    .notification-bell:hover {
+      background: var(--admin-card);
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      background: var(--admin-gold);
+      color: var(--admin-bg);
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 5px;
+      border-radius: 10px;
+      min-width: 16px;
+      text-align: center;
+      line-height: 1;
+    }
+
+    .notification-dropdown {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      width: 320px;
+      background: var(--admin-card);
+      border: 1px solid var(--admin-border);
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      margin-top: 8px;
+      backdrop-filter: blur(20px);
+    }
+
+    .notification-dropdown.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .notification-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--admin-border);
+    }
+
+    .notification-header h3 {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--admin-text);
+    }
+
+    .notification-close {
+      background: none;
+      border: none;
+      color: var(--admin-muted);
+      font-size: 18px;
+      cursor: pointer;
+      padding: 0;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      transition: var(--transition-fast);
+    }
+
+    .notification-close:hover {
+      background: var(--admin-border);
+      color: var(--admin-text);
+      transform: scale(1.1);
+    }
+
+    /* Premium Modal System */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .modal-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      background: var(--admin-card);
+      border: 1px solid var(--admin-border);
+      border-radius: 16px;
+      padding: 32px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      transform: scale(0.9);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-overlay.show .modal {
+      transform: scale(1);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .modal-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      margin: 0;
+      background: linear-gradient(135deg, #ffffff 0%, #c9a94e 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--admin-muted);
+      font-size: 24px;
+      cursor: pointer;
+      padding: 0;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      transition: var(--transition-fast);
+    }
+
+    .modal-close:hover {
+      background: var(--admin-border);
+      color: var(--admin-text);
+      transform: scale(1.1);
+    }
+
+    /* Skeleton Loaders */
+    .skeleton {
+      background: linear-gradient(90deg, 
+        rgba(255, 255, 255, 0.05) 25%, 
+        rgba(255, 255, 255, 0.1) 50%, 
+        rgba(255, 255, 255, 0.05) 75%);
+      background-size: 1000px 100%;
+      animation: shimmer 2s infinite;
+      border-radius: 8px;
+    }
+
+    .skeleton-text {
+      height: 16px;
+      margin-bottom: 8px;
+    }
+
+    .skeleton-text.small {
+      height: 12px;
+      width: 60%;
+    }
+
+    .skeleton-button {
+      height: 40px;
+      width: 100px;
+      border-radius: 12px;
+    }
+
+    .skeleton-row {
+      height: 60px;
+      margin-bottom: 8px;
+      border-radius: 8px;
+    }
+
+    /* Enhanced Empty States */
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--admin-muted);
+    }
+
+    .empty-state-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    .empty-state-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      margin-bottom: 8px;
+      color: var(--admin-text);
+    }
+
+    .empty-state-message {
+      font-size: 15px;
+      line-height: 1.6;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    /* Enhanced Form Elements */
+    input, select {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--admin-border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      color: var(--admin-text);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      transition: var(--transition-smooth);
+      backdrop-filter: blur(10px);
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--admin-gold);
+      box-shadow: 0 0 0 3px var(--admin-gold-glow);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    input::placeholder {
+      color: var(--admin-muted);
+    }
+
+    /* Enhanced Tabs */
+    .booking-tabs {
+      display: flex;
+      gap: 2px;
+      border-bottom: 1px solid var(--admin-border);
+      margin-bottom: 24px;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 12px 12px 0 0;
+      padding: 4px;
+    }
+
+    .booking-tab {
+      background: none;
+      border: none;
+      color: var(--admin-muted);
+      padding: 14px 24px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: var(--transition-smooth);
+      font-family: 'Inter', sans-serif;
+      border-radius: 8px 8px 0 0;
+      position: relative;
+    }
+
+    .booking-tab::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--admin-gold);
+      transform: scaleX(0);
+      transition: var(--transition-smooth);
+      border-radius: 2px;
+    }
+
+    .booking-tab:hover {
+      color: var(--admin-text);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .booking-tab.active {
+      color: var(--admin-gold);
+      background: rgba(201, 169, 78, 0.1);
+      font-weight: 600;
+    }
+
+    .booking-tab.active::after {
+      transform: scaleX(1);
+    }
+
+    .booking-tab .count {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--admin-muted);
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      margin-left: 8px;
+      font-weight: 600;
+      transition: var(--transition-smooth);
+    }
+
+    .booking-tab.active .count {
+      background: var(--admin-gold);
+      color: var(--admin-bg);
+      box-shadow: 0 2px 8px var(--admin-gold-glow);
+    }
+
+    .notification-list {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .notification-empty {
+      padding: 24px 20px;
+      text-align: center;
+      color: var(--admin-muted);
+      font-size: 13px;
+    }
+
+    .notification-item {
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--admin-border);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .notification-item:hover {
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .notification-item.unread {
+      background: rgba(201, 169, 78, 0.08);
+    }
+
+    .notification-item.unread::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 6px;
+      height: 6px;
+      background: var(--admin-gold);
+      border-radius: 50%;
+    }
+
+    .notification-message {
+      font-size: 13px;
+      color: var(--admin-text);
+      line-height: 1.4;
+      margin-left: 8px;
+    }
+
+    .notification-time {
+      font-size: 11px;
+      color: var(--admin-muted);
+      margin-top: 4px;
+      margin-left: 8px;
+    }
+
+    .notification-item.unread .notification-message {
+      font-weight: 500;
+    }
+
+    .notification-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      margin-left: 8px;
+    }
+
+    .notification-type-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    .notification-item.unread .notification-time {
+      color: var(--admin-gold);
+    }
+
+    .booking-tabs {
+      display: flex;
+      gap: 2px;
+      border-bottom: 1px solid var(--admin-border);
+      margin-bottom: 16px;
+    }
+
+    .booking-tab {
+      background: none;
+      border: none;
+      color: var(--admin-muted);
+      padding: 12px 20px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .booking-tab:hover {
+      color: var(--admin-text);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .booking-tab.active {
+      color: var(--admin-gold);
+      border-bottom-color: var(--admin-gold);
+      font-weight: 600;
+    }
+
+    .booking-tab .count {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--admin-muted);
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-size: 12px;
+      margin-left: 6px;
+    }
+
+    .booking-tab.active .count {
+      background: var(--admin-gold);
+      color: #000;
+    }
+
+    /* Pagination Styles */
+    .pagination-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--admin-border);
+    }
+
+    .pagination-info {
+      color: var(--admin-muted);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .pagination-controls {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .pagination-btn {
+      min-width: 40px;
+      padding: 8px 12px;
+      font-size: 13px;
+    }
+
+    .pagination-btn.active {
+      background: var(--admin-gold);
+      color: #000;
+      border-color: var(--admin-gold);
+      font-weight: 600;
+    }
+
+    .pagination-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .pagination-btn:disabled:hover {
+      transform: none;
+      box-shadow: none;
+    }
+
+    .pagination-ellipsis {
+      color: var(--admin-muted);
+      padding: 0 8px;
+      font-size: 14px;
+    }
+
+    /* Summary Cards */
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .summary-card {
+      background: var(--admin-card);
+      border: 1px solid var(--admin-border);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .summary-card:hover {
+      border-color: rgba(201, 169, 78, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .summary-card-icon {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .summary-card-count {
+      font-size: 32px;
+      font-weight: 600;
+      font-family: 'Playfair Display', serif;
+      color: var(--admin-gold);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .summary-card-label {
+      font-size: 13px;
+      color: var(--admin-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    @media (max-width: 768px) {
+      .summary-cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="admin-wrap">
+    <div class="admin-header">
+      <div>
+        <h1 class="admin-title">Admin Dashboard</h1>
+        <p class="admin-subtitle">Rooms + Bookings management (no page reloads)</p>
+      </div>
+
+      <div class="admin-actions">
+        <div class="notification-bell" id="notification-bell">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="notification-badge" id="notification-badge" style="display: none;">0</span>
+        </div>
+        <div class="notification-dropdown" id="notification-dropdown">
+          <div class="notification-header">
+            <h3>Notifications</h3>
+            <button class="notification-close" id="notification-close">×</button>
+          </div>
+          <div class="notification-list" id="notification-list">
+            <div class="notification-empty">No notifications</div>
+          </div>
+        </div>
+        <button class="admin-btn" id="rooms-refresh-btn" type="button">Refresh</button>
+        <button class="admin-btn" id="logout-btn" type="button" style="background: transparent; border: 1px solid var(--admin-border); color: var(--admin-muted);">Logout</button>
+      </div>
+    </div>
+
+    <!-- Auth Check -->
+    <script>
+      // Check authentication on page load
+      (function() {
+        const token = localStorage.getItem('adminToken');
+        if (!token) {
+          window.location.href = 'admin-login.html';
+        }
+      })();
+    </script>
+
+    <div class="admin-card" style="margin-bottom: 16px; display: flex; gap: 40px; align-items: center;">
+      <div>
+        <h2 class="admin-title" style="font-size: 14px; color: var(--admin-muted); margin: 0; font-family: 'Inter', sans-serif; letter-spacing: 0.5px; text-transform: uppercase;">Revenue Today</h2>
+        <div style="font-size: 32px; font-weight: 500; font-family: 'Playfair Display', serif; color: var(--admin-gold); margin-top: 4px;" id="revenue-today">$—</div>
+      </div>
+      <div>
+        <h2 class="admin-title" style="font-size: 14px; color: var(--admin-muted); margin: 0; font-family: 'Inter', sans-serif; letter-spacing: 0.5px; text-transform: uppercase;">Revenue This Month</h2>
+        <div style="font-size: 32px; font-weight: 500; font-family: 'Playfair Display', serif; color: var(--admin-text); margin-top: 4px;" id="revenue-month">$—</div>
+      </div>
+    </div>
+
+    <div class="admin-card" style="margin-bottom: 16px;">
+      <div class="admin-header" style="margin: 0; align-items: center;">
+        <div>
+          <h2 class="admin-title" style="font-size: 18px; margin: 0;">Walk-in Booking</h2>
+          <p class="admin-subtitle" style="margin-top: 6px;">Create an offline check-in (admin only)</p>
+        </div>
+      </div>
+
+      <form id="walkin-form" style="margin-top: 12px;">
+        <div style="display:grid; grid-template-columns: repeat(6, 1fr); gap: 10px; align-items:end;">
+          <div style="grid-column: span 2;">
+            <label for="walkin-location" style="display:block; font-size: 13px; color: var(--admin-muted); margin-bottom:6px;">Location</label>
+            <select id="walkin-location" required style="width:100%; padding: 10px 12px; border-radius: 10px; background: rgba(255,255,255,0.06); color: var(--admin-text); border: 1px solid var(--admin-border);">
+              <option value="">Select destination</option>
+              <option value="paris">Paris, France</option>
+              <option value="tokyo">Tokyo, Japan</option>
+              <option value="dubai">Dubai, UAE</option>
+              <option value="maldives">Maldives</option>
+              <option value="newyork">New York, USA</option>
+            </select>
+          </div>
+
+          <div style="grid-column: span 2;">
+            <label for="walkin-room-type" style="display:block; font-size: 13px; color: var(--admin-muted); margin-bottom:6px;">Room Type</label>
+            <select id="walkin-room-type" required style="width:100%; padding: 10px 12px; border-radius: 10px; background: rgba(255,255,255,0.06); color: var(--admin-text); border: 1px solid var(--admin-border);">
+              <option value="">Select room type</option>
+              <option value="deluxe">Deluxe Room</option>
+              <option value="suite">Suite</option>
+              <option value="penthouse">Penthouse</option>
+            </select>
+          </div>
+
+          <div style="grid-column: span 1;">
+            <label for="walkin-floor" style="display:block; font-size: 13px; color: var(--admin-muted); margin-bottom:6px;">Floor (optional)</label>
+            <select id="walkin-floor" style="width:100%; padding: 10px 12px; border-radius: 10px; background: rgba(255,255,255,0.06); color: var(--admin-text); border: 1px solid var(--admin-border);">
+              <option value="">Any</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+            </select>
+          </div>
+
+          <div style="grid-column: span 1;">
+            <label for="walkin-checkin" style="display:block; font-size: 13px; color: var(--admin-muted); margin-bottom:6px;">Check-in</label>
+            <input id="walkin-checkin" type="date" required style="width:100%; padding: 10px 12px; border-radius: 10px; background: rgba(255,255,255,0.06); color: var(--admin-text); border: 1px solid var(--admin-border);" />
+          </div>
+
+          <div style="grid-column: span 1;">
+            <label for="walkin-checkout" style="display:block; font-size: 13px; color: var(--admin-muted); margin-bottom:6px;">Check-out</label>
+            <input id="walkin-checkout" type="date" required style="width:100%; padding: 10px 12px; border-radius: 10px; background: rgba(255,255,255,0.06); color: var(--admin-text); border: 1px solid var(--admin-border);" />
+          </div>
+
+          <div style="grid-column: span 6;">
+            <div style="display:flex; gap: 12px; align-items:center;">
+              <button class="admin-btn" id="walkin-create-btn" type="submit">Create Walk-in Booking</button>
+              <div class="admin-status" id="walkin-error" style="margin-top:0; color: #e74c3c;"></div>
+              <div class="admin-status" id="walkin-success" style="margin-top:0; color: #2ecc71;"></div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="summary-cards" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 24px;">
+      <div class="summary-card" data-status="available">
+        <div class="summary-card-icon" style="color: #2ecc71;">✓</div>
+        <div class="summary-card-count" id="summary-available">—</div>
+        <div class="summary-card-label">Available Rooms</div>
+      </div>
+      <div class="summary-card" data-status="occupied">
+        <div class="summary-card-icon" style="color: #e74c3c;">🏠</div>
+        <div class="summary-card-count" id="summary-occupied">—</div>
+        <div class="summary-card-label">Occupied Rooms</div>
+      </div>
+      <div class="summary-card" data-status="reserved">
+        <div class="summary-card-icon" style="color: #3498db;">🔒</div>
+        <div class="summary-card-count" id="summary-reserved">—</div>
+        <div class="summary-card-label">Reserved Rooms</div>
+      </div>
+      <div class="summary-card" data-status="cleaning">
+        <div class="summary-card-icon" style="color: #f39c12;">🧹</div>
+        <div class="summary-card-count" id="summary-cleaning">—</div>
+        <div class="summary-card-label">Needs Cleaning</div>
+      </div>
+    </div>
+
+    <div class="admin-card">
+      <!-- Rooms Search & Filter -->
+      <div class="rooms-filter-bar" style="display: flex; gap: 16px; margin-bottom: 20px; align-items: center; flex-wrap: wrap;">
+        <div class="search-input-wrapper" style="flex: 1; min-width: 200px; max-width: 300px;">
+          <input 
+            type="text" 
+            id="rooms-search" 
+            placeholder="Search by room number..." 
+            style="width: 100%; padding: 12px 16px; border-radius: 10px; background: rgba(255,255,255,0.06); color: var(--admin-text); border: 1px solid var(--admin-border); font-size: 14px;"
+          />
+        </div>
+        <div class="filter-dropdown-wrapper" style="min-width: 150px;">
+          <select 
+            id="rooms-status-filter"
+            style="width: 100%; padding: 12px 16px; border-radius: 10px; background: rgba(255,255,255,0.06); color: var(--admin-text); border: 1px solid var(--admin-border); font-size: 14px; cursor: pointer;"
+          >
+            <option value="">All Statuses</option>
+            <option value="available">Available</option>
+            <option value="reserved">Reserved</option>
+            <option value="occupied">Occupied</option>
+            <option value="needs_cleaning">Needs Cleaning</option>
+          </select>
+        </div>
+        <button class="admin-btn" id="rooms-clear-filters" type="button" style="padding: 12px 20px;">
+          Clear
+        </button>
+      </div>
+
+      <div class="admin-status" id="rooms-status">Loading rooms…</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Room Number</th>
+            <th>Type</th>
+            <th>Floor</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="rooms-tbody">
+          <tr>
+            <td colspan="5">—</td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- Rooms Pagination -->
+      <div class="pagination-container" id="rooms-pagination"></div>
+    </div>
+
+    <div class="admin-card" style="margin-top: 16px;">
+      <div class="admin-header" style="margin: 0; align-items: center;">
+        <div>
+          <h2 class="admin-title" style="font-size: 18px; margin: 0;">Bookings</h2>
+          <p class="admin-subtitle" style="margin-top: 6px;">Manage active and historical bookings</p>
+        </div>
+        <div class="admin-actions">
+          <span class="admin-status" id="bookings-status" style="margin-top: 0;">Loading bookings…</span>
+        </div>
+      </div>
+
+      <!-- Booking Tabs -->
+      <div class="booking-tabs" style="margin: 16px 0;">
+        <button class="booking-tab active" data-status="active" id="active-tab">
+          Active Bookings
+        </button>
+        <button class="booking-tab" data-status="history" id="history-tab">
+          Booking History
+        </button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Room ID</th>
+            <th>Check-in</th>
+            <th>Check-out</th>
+            <th>Booking Status</th>
+            <th>Room Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="bookings-tbody">
+          <tr>
+            <td colspan="6">—</td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- Bookings Pagination -->
+      <div class="pagination-container" id="bookings-pagination"></div>
+    </div>
+  </div>
+
+  <script src="adminRooms.js"></script>
+</body>
+
+</html>
+

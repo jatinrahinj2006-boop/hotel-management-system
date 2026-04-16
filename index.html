@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="description"
+
+    content="Experience unparalleled luxury at Aurum Hotels. Book premium rooms, suites, and penthouses with world-class amenities.">
+
+  <title>Aurum Hotels — Luxury Redefined</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap"
+
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+
+</head>
+
+
+
+<body>
+
+
+
+  <!-- ═══════════════ NAVIGATION ═══════════════ -->
+
+  <nav class="nav" id="nav">
+
+    <div class="nav__container">
+
+      <a href="#" class="nav__logo">AURUM</a>
+
+      <ul class="nav__links">
+
+        <li><a href="#rooms">Rooms</a></li>
+
+        <li><a href="#booking-bar">Reservations</a></li>
+
+        <li><a href="#" id="nav-contact">Contact</a></li>
+
+      </ul>
+
+      <div class="nav__auth" id="nav-auth">
+
+        <button class="btn btn--outline" id="nav-login-btn" style="padding: 8px 16px; font-size: 14px;">Log In</button>
+
+        <button class="btn btn--gold" id="nav-signup-btn" style="padding: 8px 16px; font-size: 14px;">Sign Up</button>
+
+      </div>
+
+      <div class="nav__user" id="nav-user" style="display: none; align-items: center; gap: 12px;">
+
+        <span id="user-name" style="color: var(--text-secondary); font-size: 14px;"></span>
+
+        <button class="btn btn--outline" id="nav-logout-btn" style="padding: 8px 16px; font-size: 14px;">Logout</button>
+
+      </div>
+
+      <button class="nav__menu-btn" id="menu-toggle" aria-label="Toggle menu">
+
+        <span></span>
+
+        <span></span>
+
+      </button>
+
+    </div>
+
+  </nav>
+
+
+
+  <!-- ═══════════════ HERO ═══════════════ -->
+
+  <section class="hero" id="hero">
+
+    <div class="hero__overlay"></div>
+
+    <img src="assets/hero-bg.png" alt="Luxury hotel exterior at twilight" class="hero__bg">
+
+    <div class="hero__content">
+
+      <p class="hero__eyebrow">Est. 2024 — Luxury Redefined</p>
+
+      <h1 class="hero__heading">Where Elegance<br>Meets Tranquility</h1>
+
+      <p class="hero__sub">An intimate sanctuary crafted for the discerning traveler.</p>
+
+      <a href="#booking-bar" class="btn btn--gold hero__cta">Reserve Your Stay</a>
+
+    </div>
+
+    <div class="hero__scroll-hint">
+
+      <span>Scroll</span>
+
+      <div class="hero__scroll-line"></div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- ═══════════════ BOOKING BAR ═══════════════ -->
+
+  <section class="booking-bar" id="booking-bar">
+
+    <div class="booking-bar__container reveal">
+
+      <h2 class="booking-bar__title">Plan Your Stay</h2>
+
+      <div class="booking-bar__fields">
+
+        <div class="booking-bar__field">
+
+          <label for="location">Location</label>
+
+          <select id="location">
+
+            <option value="">Select destination</option>
+
+            <option value="paris">Paris, France</option>
+
+            <option value="tokyo">Tokyo, Japan</option>
+
+            <option value="dubai">Dubai, UAE</option>
+
+            <option value="maldives">Maldives</option>
+
+            <option value="newyork">New York, USA</option>
+
+          </select>
+
+        </div>
+
+        <div class="booking-bar__field">
+
+          <label for="checkin">Check-in</label>
+
+          <input type="date" id="checkin">
+
+        </div>
+
+        <div class="booking-bar__field">
+
+          <label for="checkout">Check-out</label>
+
+          <input type="date" id="checkout">
+
+        </div>
+
+        <div class="booking-bar__field">
+
+          <label for="room-type">Room Type</label>
+
+          <select id="room-type">
+
+            <option value="">Any room</option>
+
+            <option value="deluxe">Deluxe Room</option>
+
+            <option value="suite">Executive Suite</option>
+
+            <option value="penthouse">Penthouse</option>
+
+          </select>
+
+        </div>
+
+        <div class="booking-bar__field">
+
+          <label for="floor-pref">Preferred Floor</label>
+
+          <select id="floor-pref">
+
+            <option value="">Any floor</option>
+
+            <option value="2">Floor 2</option>
+
+            <option value="3">Floor 3</option>
+
+            <option value="4">Floor 4</option>
+
+            <option value="5">Floor 5</option>
+
+            <option value="6">Floor 6 — Penthouse</option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+      <div class="booking-bar__status" id="booking-status">
+
+        <span class="booking-bar__dot"></span>
+
+        <span id="status-text">Select your preferences to see availability</span>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- ═══════════════ ROOMS GRID ═══════════════ -->
+
+  <section class="rooms" id="rooms">
+
+    <div class="rooms__header reveal">
+
+      <p class="rooms__eyebrow">Accommodations</p>
+
+      <h2 class="rooms__heading">Curated Luxury</h2>
+
+      <p class="rooms__sub">Each room tells a story of meticulous craftsmanship and timeless elegance.</p>
+
+    </div>
+
+    <div class="rooms__grid">
+
+
+
+      <article class="room-card reveal" data-room="deluxe" data-price="450">
+
+        <div class="room-card__img-wrap">
+
+          <img src="assets/room-deluxe.png" alt="Deluxe Room with city view" loading="lazy">
+
+        </div>
+
+        <div class="room-card__body">
+
+          <div class="room-card__meta">
+
+            <span class="room-card__type">Deluxe Room</span>
+
+            <span class="room-card__detail">42 m² · City View</span>
+
+          </div>
+
+          <div class="room-card__footer">
+
+            <span class="room-card__price"><span class="room-card__currency">$</span>450<span class="room-card__per"> /
+
+                night</span></span>
+
+            <button class="btn btn--outline room-card__btn" data-room="deluxe">View Details</button>
+
+          </div>
+
+        </div>
+
+      </article>
+
+
+
+      <article class="room-card reveal" data-room="suite" data-price="850">
+
+        <div class="room-card__img-wrap">
+
+          <img src="assets/room-suite.png" alt="Executive Suite with ocean view" loading="lazy">
+
+        </div>
+
+        <div class="room-card__body">
+
+          <div class="room-card__meta">
+
+            <span class="room-card__type">Executive Suite</span>
+
+            <span class="room-card__detail">78 m² · Ocean View</span>
+
+          </div>
+
+          <div class="room-card__footer">
+
+            <span class="room-card__price"><span class="room-card__currency">$</span>850<span class="room-card__per"> /
+
+                night</span></span>
+
+            <button class="btn btn--outline room-card__btn" data-room="suite">View Details</button>
+
+          </div>
+
+        </div>
+
+      </article>
+
+
+
+      <article class="room-card reveal" data-room="penthouse" data-price="1800">
+
+        <div class="room-card__img-wrap">
+
+          <img src="assets/room-penthouse.png" alt="Penthouse with skyline view" loading="lazy">
+
+        </div>
+
+        <div class="room-card__body">
+
+          <div class="room-card__meta">
+
+            <span class="room-card__type">Penthouse</span>
+
+            <span class="room-card__detail">145 m² · Skyline Panorama</span>
+
+          </div>
+
+          <div class="room-card__footer">
+
+            <span class="room-card__price"><span class="room-card__currency">$</span>1,800<span class="room-card__per">
+
+                / night</span></span>
+
+            <button class="btn btn--outline room-card__btn" data-room="penthouse">View Details</button>
+
+          </div>
+
+        </div>
+
+      </article>
+
+
+
+    </div>
+
+  </section>
+
+
+
+  <!-- ═══════════════ FOOTER ═══════════════ -->
+
+  <footer class="footer">
+
+    <div class="footer__container">
+
+      <div class="footer__brand">
+
+        <span class="footer__logo">AURUM</span>
+
+        <p class="footer__tagline">Luxury Redefined</p>
+
+      </div>
+
+      <div class="footer__links">
+
+        <a href="#">Privacy</a>
+
+        <a href="#">Terms</a>
+
+        <a href="#">Careers</a>
+
+      </div>
+
+      <p class="footer__copy">&copy; 2026 Aurum Hotels. All rights reserved.</p>
+
+    </div>
+
+  </footer>
+
+
+
+  <!-- ═══════════════ BOOKING MODAL ═══════════════ -->
+
+  <div class="modal-overlay" id="booking-modal">
+
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+
+      <button class="modal__close" id="booking-modal-close" aria-label="Close">&times;</button>
+
+      <div class="modal__img-wrap">
+
+        <img src="" alt="" id="modal-room-img">
+
+      </div>
+
+      <div class="modal__body">
+
+        <p class="modal__eyebrow" id="modal-room-detail"></p>
+
+        <h2 class="modal__title" id="modal-title"></h2>
+
+        <p class="modal__description" id="modal-room-desc"></p>
+
+        <div class="modal__amenities" id="modal-amenities"></div>
+
+        <div class="modal__price-row">
+
+          <span class="modal__price" id="modal-room-price"></span>
+
+        </div>
+
+        <button class="btn btn--gold modal__confirm" id="confirm-booking">Confirm Booking</button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- ═══════════════ SUCCESS MODAL ═══════════════ -->
+
+  <div class="modal-overlay" id="success-modal">
+
+    <div class="modal modal--success" role="dialog" aria-modal="true" aria-labelledby="success-title">
+
+      <button class="modal__close" id="success-modal-close" aria-label="Close">&times;</button>
+
+      <div class="modal__body modal__body--center">
+
+        <div class="success-icon">
+
+          <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+            <circle cx="26" cy="26" r="25" stroke="#c9a94e" stroke-width="2" />
+
+            <path d="M15 27L22 34L37 19" stroke="#c9a94e" stroke-width="2.5" stroke-linecap="round"
+
+              stroke-linejoin="round" />
+
+          </svg>
+
+        </div>
+
+        <h2 class="modal__title" id="success-title">Reservation Confirmed</h2>
+
+        <p class="modal__description">Your luxury stay has been reserved. A confirmation will be sent to your email
+
+          shortly.</p>
+
+        <div class="success-details" id="success-details"></div>
+
+        <button class="btn btn--gold modal__confirm" id="success-close-btn">Done</button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- ═══════════════ SIGNUP MODAL ═══════════════ -->
+
+  <div class="modal-overlay" id="signup-modal">
+
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="signup-title">
+
+      <button class="modal__close" id="signup-modal-close" aria-label="Close">&times;</button>
+
+      <div class="modal__body">
+
+        <h2 class="modal__title" id="signup-title">Create Account</h2>
+
+        <p class="modal__description">Sign up to book your luxury stay</p>
+
+        <form id="signup-form" style="margin-top: 24px;">
+
+          <div style="margin-bottom: 16px;">
+
+            <label style="display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Full Name</label>
+
+            <input type="text" id="signup-name" required style="width: 100%; padding: 12px 14px; border-radius: 8px; background: rgba(255,255,255,0.06); color: var(--text-primary); border: 1px solid var(--border); font-size: 15px;">
+
+          </div>
+
+          <div style="margin-bottom: 16px;">
+
+            <label style="display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Email</label>
+
+            <input type="email" id="signup-email" required style="width: 100%; padding: 12px 14px; border-radius: 8px; background: rgba(255,255,255,0.06); color: var(--text-primary); border: 1px solid var(--border); font-size: 15px;">
+
+          </div>
+
+          <div style="margin-bottom: 16px;">
+
+            <label style="display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Phone</label>
+
+            <input type="tel" id="signup-phone" required style="width: 100%; padding: 12px 14px; border-radius: 8px; background: rgba(255,255,255,0.06); color: var(--text-primary); border: 1px solid var(--border); font-size: 15px;">
+
+          </div>
+
+          <div style="margin-bottom: 20px;">
+
+            <label style="display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Password</label>
+
+            <input type="password" id="signup-password" required minlength="6" style="width: 100%; padding: 12px 14px; border-radius: 8px; background: rgba(255,255,255,0.06); color: var(--text-primary); border: 1px solid var(--border); font-size: 15px;">
+
+          </div>
+
+          <button type="submit" class="btn btn--gold" style="width: 100%;">Sign Up</button>
+
+          <div style="text-align: center; margin-top: 16px;">
+
+            <span style="color: var(--text-muted); font-size: 14px;">Already have an account? </span>
+
+            <a href="#" id="signup-to-login" style="color: var(--gold); font-size: 14px; text-decoration: none;">Log In</a>
+
+          </div>
+
+          <div id="signup-error" style="color: #e74c3c; font-size: 14px; text-align: center; margin-top: 12px; min-height: 20px;"></div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- ═══════════════ LOGIN MODAL ═══════════════ -->
+
+  <div class="modal-overlay" id="login-modal">
+
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="login-title">
+
+      <button class="modal__close" id="login-modal-close" aria-label="Close">&times;</button>
+
+      <div class="modal__body">
+
+        <h2 class="modal__title" id="login-title">Welcome Back</h2>
+
+        <p class="modal__description">Log in to manage your reservations</p>
+
+        <form id="login-form" style="margin-top: 24px;">
+
+          <div style="margin-bottom: 16px;">
+
+            <label style="display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Email</label>
+
+            <input type="email" id="login-email" required style="width: 100%; padding: 12px 14px; border-radius: 8px; background: rgba(255,255,255,0.06); color: var(--text-primary); border: 1px solid var(--border); font-size: 15px;">
+
+          </div>
+
+          <div style="margin-bottom: 20px;">
+
+            <label style="display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Password</label>
+
+            <input type="password" id="login-password" required style="width: 100%; padding: 12px 14px; border-radius: 8px; background: rgba(255,255,255,0.06); color: var(--text-primary); border: 1px solid var(--border); font-size: 15px;">
+
+          </div>
+
+          <button type="submit" class="btn btn--gold" style="width: 100%;">Log In</button>
+
+          <div style="text-align: center; margin-top: 16px;">
+
+            <span style="color: var(--text-muted); font-size: 14px;">Don't have an account? </span>
+
+            <a href="#" id="login-to-signup" style="color: var(--gold); font-size: 14px; text-decoration: none;">Sign Up</a>
+
+          </div>
+
+          <div id="login-error" style="color: #e74c3c; font-size: 14px; text-align: center; margin-top: 12px; min-height: 20px;"></div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <script src="app.js"></script>
+
+</body>
+
+
+
+</html>
